@@ -7,6 +7,8 @@
 
 # Быстрый старт
 npm i
+
 npm run dev (dev mode)
+
 npm run build (production mode)
 
