@@ -1,0 +1,13 @@
+.link{
+    overflow-wrap: anywhere;
+}
+
+.copy{
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.tdCopy{
+    vertical-align: middle !important;
+}

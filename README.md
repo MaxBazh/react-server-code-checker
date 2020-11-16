@@ -4,3 +4,9 @@
 Демо: https://лидермедиа.рф/404checker/
 
 Под капотом: React, MobX, PHP
+
+# Быстрый старт
+npm i
+npm run dev (dev mode)
+npm run build (production mode)
+
