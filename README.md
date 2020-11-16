@@ -12,3 +12,4 @@ npm run dev (dev mode)
 
 npm run build (production mode)
 
+Важно! Для production поменяйте mainServerUrl на ваш реальный сервер в файле src/utils/makeRequest.js
