@@ -33,62 +33,52 @@ class Urls{
     }
 
     @computed get getStatuses(){
-        let total = 0;
+        return this.urls.reduce((accumulator, item) => {
+                    let { status } = item;
+                    accumulator[0].count += 1;
+                    
+                    const addedElIndex = accumulator.findIndex((el) => el.status === status);
+                    if( addedElIndex !== -1 ){
+                        accumulator[addedElIndex]['count']++;
+                        return accumulator;
+                    }
 
-        let statuses = this.urls.reduce(
-            (accumulator, item) => {
-                let { status } = item;
-                total++;
-                
-                const addedElIndex = accumulator.findIndex((el) => el.status === status);
-                if( addedElIndex !== -1 ){
-                    accumulator[addedElIndex]['count']++;
-                    return accumulator;
-                }
-
-                return [...accumulator, { status, count: 1 }]
-            }, 
-            []
-        );
-
-        // Сортируем в нужном порядке. 
-        // 200, 404, ... , Другое
-        // Наверняка можно сделать лучше.
-        statuses.sort((a, b) => {
-            if( a.status == 200 ) return -1;
-            if( b.status == 200 ) return 1;
-            if( a.status == 404 ) return -1;
-            if( b.status == 404 ) return 1;
-            if( a.status == -1 ) return 1;
-            if( b.status == -1 ) return -1;
-        });
-        
-        // Добавляем ВСЕ
-        statuses.unshift({status: 1, count: total});
-        
-        return statuses;
+                    return [...accumulator, { status, count: 1 }]
+                }, 
+                [{status: 1, count: 0}]
+            )
+            .sort((a, b) => {
+                // Сортируем в нужном порядке. 
+                // 200, 404, ... , Другое
+                // Наверняка можно сделать лучше.
+                if( a.status == 1 ) return -1;
+                if( b.status == 1 ) return 1;
+                if( a.status == 200 ) return -1;
+                if( b.status == 200 ) return 1;
+                if( a.status == 404 ) return -1;
+                if( b.status == 404 ) return 1;
+                if( a.status == -1 ) return 1;
+                if( b.status == -1 ) return -1;
+            });
     }
     
-    @computed get getActiveUrls(){    
-        let activeUrls = [];
-        
-        this.urls.forEach((el, i) => {
+    @computed get getActiveUrls(){
+        return this.urls.reduce((activeUrls, el) => {
             const { status } = el;
 
             if( this.activeStatus !== 1 && this.activeStatus !== status ){
-                return false;
+                return activeUrls;
             }
 
-            activeUrls.push(el);
-        });
-        
-        return activeUrls;
+            return [...activeUrls, el];
+
+        }, []);
     }
 
+    // Нужен ли?
     @computed get getByIndex(){     
         return (i) => this.urls[i];
     }
-
 
     @action async add(){
         const { add } = this.rootStore.notifications;

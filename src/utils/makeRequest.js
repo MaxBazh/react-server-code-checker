@@ -1,6 +1,6 @@
 let mainServerUrl = '/php/';
 // Для prod
-// mainServerUrl = 'https://xn--80ahadapesm3b.xn--p1ai/404checker/php/';
+mainServerUrl = 'http://wp-book.ru/404checker/php/';
 
 export default async function makeRequest(url, options = {}, baseUrl = mainServerUrl){
     const res = await fetch(baseUrl + url, options);

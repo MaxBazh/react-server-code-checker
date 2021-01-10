@@ -14,16 +14,21 @@ const TBody = (props) => {
         getActiveUrls
       } = urlsStore;
     
-    function copyText(idx) {
-        const item = urlsStore.getByIndex(idx);
-        navigator.clipboard.writeText(item.url)
+    function copyText(urlText) {        
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(urlText)
             .then(() => {
-                notificationsStore.add(`Скопировано ${item.url}.`); 
+                notificationsStore.add(`Скопировано ${urlText}.`); 
             })
             .catch(err => {
                 notificationsStore.add('Ошибка копирования в буфер.');  
                 console.log('Ошбика копирования. ', err);
             })
+        } else {        
+            fallbackCopyTextToClipboard(urlText) 
+                ? notificationsStore.add(`Скопировано ${urlText}.`)
+                : notificationsStore.add('Ошибка копирования в буфер.');
+        }        
     }
 
     let tbody = getActiveUrls.map((el, i) => {
@@ -50,7 +55,7 @@ const TBody = (props) => {
         return (
             <tr className={tableClass} key={i}>
             <td className={styles.tdCopy}>
-                <img src={copyIcon} className={styles.copy} onClick={() => copyText(i)}/>
+                <img src={copyIcon} className={styles.copy} onClick={() => copyText(url)}/>
             </td>
             <td scope="row">
                 <a 
@@ -83,5 +88,22 @@ const TBody = (props) => {
         </tbody>
     )
 }
+
+function fallbackCopyTextToClipboard(text) {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+  
+    try {
+      const successful = document.execCommand('copy');  
+      return successful;
+    } catch (err) {  
+      return false;
+    } finally {
+      document.body.removeChild(textArea);
+    }
+  }
 
 export default withStore(TBody);

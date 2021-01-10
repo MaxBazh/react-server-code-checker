@@ -33,6 +33,9 @@ class UrlForm extends Component{
         return (
             <>
                 <div className="col-12">
+                    <p>Сервис проверяет ответ сервера для введенных URL. Бесплатно и без ограничений по количеству URL.</p>
+                </div>
+                <div className="col-12">
                     <h2>Введите список URL для проверки</h2>
                 </div>
                 <div className="col-12">
